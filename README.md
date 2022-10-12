@@ -21,3 +21,6 @@ msg_to:  # 设置要发送给谁的邮箱，支持1个或多个
   - xxx@qq.com
 ```
 4. 购买一个centos云服务器，然后`crontab -e`接`0 7 * * * python [DIRPATH]/BBC_crawl.py` （每天7点执行一次） ， 或者issue你的邮箱，我把你加进msg_to，大家一起学习:sunny: 
+
+## PDF截图
+![image](https://user-images.githubusercontent.com/74846219/195386500-b9d5c5fc-d566-4037-b94f-e8f95944d653.png)
