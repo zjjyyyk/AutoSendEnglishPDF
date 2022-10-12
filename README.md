@@ -2,8 +2,8 @@
 
 > 程序很简单，学英语是关键
 
-## one-sentennce usage
-每天从BBC爬一篇新闻下来转成pdf发到qq邮箱里
+## one-sentence usage
+每天从BBC爬一篇新闻下来转成pdf发到qq邮箱里，便于打印学习
 
 ## 使用方法
 1. 安装依赖 `pip install -r requirements.txt`
