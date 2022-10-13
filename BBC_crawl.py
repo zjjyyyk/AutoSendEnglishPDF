@@ -2,6 +2,7 @@ import yaml
 import httpx as requests
 from lxml import etree
 import pdfkit
+import os
 
 # 邮件相关
 import smtplib
@@ -11,15 +12,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 import pyjokes
 
-'''
-TODO
-0. requirements.txt
-1. 从https://wkhtmltopdf.org/downloads.html下载安装对应版本，并修改下面configuration里的路径
-2. 修改headers？
-3. 还可以调一调style
-'''
+
 
 # 读取配置文件
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 params = {}
 with open('config.yaml','rb') as f:
 	params = list(yaml.safe_load_all(f))[0]
@@ -191,7 +187,8 @@ def send_to_qqMail(pdf_filename):
 	for msg_to in msg_to_list:
 		if not send_email(msg_from,passwd,msg_to,text_content,file_path):
 			print('发送邮件时出现问题')
-			break
+			return False
+	return True
 
 
 
@@ -207,8 +204,7 @@ if __name__ == '__main__':
 		pdf_filename = format_pdf(content)
 		isSuccess = send_to_qqMail(pdf_filename)
 		if isSuccess:
-			pass
-			# f.write(news_url+'\n')
+			f.write(news_url+'\n')
 		else:
 			print('Something wrong happened.')
 
