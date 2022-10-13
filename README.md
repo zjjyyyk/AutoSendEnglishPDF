@@ -12,6 +12,8 @@
 ```
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36  # 设置headers
 
+frequency_threshold: 6000  # 按照word frequency list 60000 English.xlsx中词频排名挑选4个词的时候，设置的对单词的最低词频排名门槛
+
 wkhtmltopdf: G:\wkhtmltopdf\bin\wkhtmltopdf.exe  # 设置wkhtmltopdf运行路径
 
 msg_from: 791xxxxxxx9@qq.com  # 设置发送者的邮箱
@@ -20,7 +22,7 @@ msg_to:  # 设置要发送给谁的邮箱，支持1个或多个
   - 791xxxxxxx9@qq.com  
   - xxx@qq.com
 ```
-4. 购买一个centos云服务器，然后`crontab -e`接`0 7 * * * python [DIRPATH]/BBC_crawl.py` （每天7点执行一次） ， 或者issue你的邮箱，我把你加进msg_to，大家一起学习:sunny: 
+4. 购买一个~centos~ Ubuntu服务器，然后`crontab -e`接`0 7 * * * python [DIRPATH]/BBC_crawl.py` （每天7点执行一次） ， 或者issue你的邮箱，我把你加进msg_to，大家一起学习:sunny: 
 
 ## PDF截图
-![image](https://user-images.githubusercontent.com/74846219/195386500-b9d5c5fc-d566-4037-b94f-e8f95944d653.png)
+![image](https://user-images.githubusercontent.com/74846219/195518348-3184e3a6-a637-4fec-a85d-c4e628508f58.png)
