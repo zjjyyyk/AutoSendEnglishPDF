@@ -6,6 +6,7 @@ import pandas as pd
 import re
 import random
 import os
+import time
 
 # 邮件相关
 import smtplib
@@ -68,7 +69,7 @@ def clean_and_wrap_raw_data(sentence:str, type:str):
 	global wordList
 	assert type in ['title', 'datetime', 'paragraph'], 'unvalid type in "clean_and_wrap_data"'
 	sentence = sentence.replace("’","'").replace('“','"').replace('”','"').replace('—','--').strip()
-	wordList = wordList + [''.join(filter(str.isalpha,word.lower())) for word in re.split(r'[ ,.?!-]',sentence) if word != '']
+	wordList = wordList + [''.join(filter(str.isalpha,word.lower())) for word in re.split(r'[ ,.?!-a():;]',sentence) if word != '']
 	wrap_dict = {
 			'title': '<h1 class="title">{}</h1>',
 			'datetime': '<div class="time">{}</div>',
@@ -215,11 +216,11 @@ def send_to_qqMail(pdf_filename):
 		  s = smtplib.SMTP_SSL("smtp.qq.com", 465)
 		  s.login(msg_from, passwd)
 		  s.sendmail(msg_from, msg_to, msg.as_string())
-		  print("发送成功")
+		  print("发送成功",msg_to)
 		  s.quit()
 		  return True
 		except smtplib.SMTPException as e:
-		  print("发送失败")
+		  print("发送失败",msg_to)
 		  s.quit()
 		  return False
 	msg_from = params['msg_from']  # 发送方邮箱
@@ -236,6 +237,7 @@ def send_to_qqMail(pdf_filename):
 
 
 if __name__ == '__main__':
+	print('Start time:',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
 	with open('history.txt','a+') as f:
 		i = 1
 		news_url = get_latest_news_url(i)
@@ -252,9 +254,6 @@ if __name__ == '__main__':
 		else:
 			print('Something wrong happened.')
 		os.remove(pdf_filename)
-
-
-		
-
-
+		print('End time:',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+		print('*'*40)
 
