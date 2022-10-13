@@ -1,5 +1,0 @@
-httpx==0.23.0
-lxml==4.5.0
-pdfkit==1.0.0
-pyjokes==0.6.0
-PyYAML==6.0
