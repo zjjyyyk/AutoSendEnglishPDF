@@ -42,21 +42,9 @@ def get_news_content(url:str):
 	selector = etree.HTML(response.text)  # html为Element对象
 	title = selector.xpath('/html/body/div[1]/div/section/div/div/div[1]/div/div[1]/div/div[1]/div[2]/h1/text()')[0].strip()
 	datetime = selector.xpath('/html/body/div[1]/div/section/div/div/div[1]/div/div[1]/div/div[1]/div[2]/span[2]/span/@datetime')[0]
-	paragraphs = selector.xpath('/html/body/div[1]/div/section/div/div/div[1]/div/div[1]/div/div[2]//text()')
-	dummy_linkContents = selector.xpath('/html/body/div[1]/div/section/div/div/div[1]/div/div[1]/div/div[2]//a/text()') + \
-							selector.xpath('/html/body/div[1]/div/section/div/div/div[1]/div/div[1]/div/div[2]//strong/text()') 
-	for linkContent in dummy_linkContents:
-		index = paragraphs.index(linkContent)
-		if index == 0:
-			paragraphs[index + 1] = paragraphs[index] + paragraphs[index + 1]
-			del paragraphs[index]
-		elif index == len(paragraphs)-1:
-			paragraphs[index - 1] = paragraphs[index - 1] + paragraphs[index]
-			del paragraphs[index]
-		else:
-			paragraphs[index - 1] = paragraphs[index - 1] + paragraphs[index] + paragraphs[index + 1]
-			del paragraphs[index]
-			del paragraphs[index]
+	p_elements = selector.xpath('/html/body/div[1]/div/section/div/div/div[1]/div/div[1]/div/div[2]/p') + \
+				selector.xpath('/html/body/div[1]/div/section/div/div/div[1]/div/div[1]/div/div[2]/div/p')
+	paragraphs = [''.join(p.xpath('.//text()')) for p in p_elements]
 	content = {
 		'title':title,
 		'datetime':datetime,
@@ -82,11 +70,11 @@ def choose_difficult_words(wordList:list,num:int = 4):
 	df = pd.read_excel('word frequency list 60000 English.xlsx',sheet_name='Sheet1',engine='openpyxl')
 	frequency_threshold = params['frequency_threshold']
 	difficult_words = [word.lower() for word in wordList if '  '+word.lower() in df[' word'].values and df[df[' word']=='  '+word.lower()]['RANK #'].values[0] > frequency_threshold]
-	while len(difficult_words) < num:
+	while len(list(set(difficult_words))) < num:
 		frequency_threshold = frequency_threshold - 100
 		difficult_words = [word.lower() for word in wordList if '  '+word.lower() in df[' word'].values and df[df[' word']=='  '+word.lower()]['RANK #'].values[0] > frequency_threshold]
 	print('Current frequency_threshold:',frequency_threshold)
-	return frequency_threshold, random.sample(difficult_words,num)
+	return frequency_threshold, random.sample(list(set(difficult_words)),num)
 
 def format_pdf(content:dict):
 	html_title = clean_and_wrap_raw_data(content['title'],'title')
@@ -256,4 +244,3 @@ if __name__ == '__main__':
 		os.remove(pdf_filename)
 		print('End time:',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
 		print('*'*40)
-
