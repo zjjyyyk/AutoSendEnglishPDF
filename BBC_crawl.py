@@ -183,7 +183,7 @@ def format_pdf(content:dict):
 		raise
 
 def send_to_qqMail(pdf_filename):
-	def send_email(msg_from, passwd, msg_to, text_content, file_path=None):
+	def send_email(msg_from, passwd, msg_to, text_content, file_path=None,max_chances=10):
 		print('开始发送啦')
 		msg = MIMEMultipart()
 		subject = "每日英语新闻阅读"  # 主题
@@ -200,17 +200,20 @@ def send_to_qqMail(pdf_filename):
 		msg['Subject'] = subject
 		msg['From'] = msg_from
 		msg['To'] = msg_to
-		try:
-		  s = smtplib.SMTP_SSL("smtp.qq.com", 465)
-		  s.login(msg_from, passwd)
-		  s.sendmail(msg_from, msg_to, msg.as_string())
-		  print("发送成功",msg_to)
-		  s.quit()
-		  return True
-		except smtplib.SMTPException as e:
-		  print("发送失败",msg_to)
-		  s.quit()
-		  return False
+		for i in range(max_chances):
+			try:
+			  s = smtplib.SMTP_SSL("smtp.qq.com", 465)
+			  s.login(msg_from, passwd)
+			  s.sendmail(msg_from, msg_to, msg.as_string())
+			  print("发送成功",msg_to)
+			  s.quit()
+			  return True
+			except smtplib.SMTPException as e:
+			  print("发送失败",msg_to,'剩余尝试次数：',max_chances-i)
+			  continue
+		print("所有尝试均失败了，无奈返回False")
+		s.quit()
+		return False
 	msg_from = params['msg_from']  # 发送方邮箱
 	passwd = params['passwd']  # 填入发送方邮箱的授权码（就是刚刚你拿到的那个授权码）
 	msg_to_list = params['msg_to']  # 收件人邮箱，我是自己发给自己
@@ -244,3 +247,8 @@ if __name__ == '__main__':
 		os.remove(pdf_filename)
 		print('End time:',time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
 		print('*'*40)
+
+		
+
+
+
