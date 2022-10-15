@@ -210,6 +210,7 @@ def send_to_qqMail(pdf_filename):
 			  return True
 			except smtplib.SMTPException as e:
 			  print("发送失败",msg_to,'剩余尝试次数：',max_chances-i)
+			  time.sleep(5)
 			  continue
 		print("所有尝试均失败了，无奈返回False")
 		s.quit()
