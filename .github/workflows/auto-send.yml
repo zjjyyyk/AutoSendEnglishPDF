@@ -30,7 +30,7 @@ jobs:
         msg_to: ${{ secrets.msg_to }}
     
     - name: Install wkhtmltopdf
-      run: apt install -y wkhtmltopdf
+      run: sudo apt install -y wkhtmltopdf
 
     - name: Auto Send
       run: python BBC_crawl.py
