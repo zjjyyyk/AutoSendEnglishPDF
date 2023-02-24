@@ -10,6 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Install wkhtmltopdf
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wkhtmltopdf
+
     - name: Checkout Source
       uses: actions/checkout@v3
 
@@ -28,11 +33,6 @@ jobs:
         msg_from: ${{ secrets.msg_from }}
         passwd: ${{ secrets.passwd }}
         msg_to: ${{ secrets.msg_to }}
-    
-    - name: Install wkhtmltopdf
-      uses: ConorMacBride/install-package@v1
-        with:
-          apt: wkhtmltopdf
   
     - name: Auto Send
       run: python BBC_crawl.py
