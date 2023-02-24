@@ -7,7 +7,7 @@ if __name__ == "__main__":
 		'wkhtmltopdf': '/usr/bin/wkhtmltopdf', 
 		'msg_from': os.getenv('msg_from'), 
 		'passwd': os.getenv('passwd'), 
-		'msg_to': os.getenv('msg_to').replace(' ', '').split('&&')
+		'msg_to': os.getenv('msg_to').split()
 	}
 	if not config['msg_from']:
 		raise KeyError('[ERROR] Please set `msg_from` in secrets!')
