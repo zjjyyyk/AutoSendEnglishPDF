@@ -30,8 +30,10 @@ jobs:
         msg_to: ${{ secrets.msg_to }}
     
     - name: Install wkhtmltopdf
-      run: sudo apt-get install -y wkhtmltopdf
-
+      uses: ConorMacBride/install-package@v1
+        with:
+          apt: wkhtmltopdf
+  
     - name: Auto Send
       run: python BBC_crawl.py
 
